@@ -1,0 +1,39 @@
+<div class="modal-background" (click)="closeModalFunction()"></div>
+<div class="modal-content">
+    <div class="main-content-modal">
+
+        <div class="title">
+            <h3>
+                {{ title ? title : '¡Registro exitoso!' }}
+            </h3>
+        </div>
+
+        <div class="paragraph">
+            <svg id="successAnimation" class="animated" xmlns="http://www.w3.org/2000/svg" width="200" height="200"
+                viewBox="0 0 70 70">
+                <circle id="successAnimationCircle" cx="35" cy="35" r="24" stroke="#005596" stroke-width="2"
+                    stroke-linecap="round" fill="transparent" />
+                <polyline id="successAnimationCheck" stroke="#005596" stroke-width="2" points="23 34 34 43 47 27"
+                    fill="transparent" />
+            </svg>
+            <br>
+            <p style="font-size: 1.5em;" *ngIf="!message">
+                En caso de que seas un ATP o un Asesor, debes esperar a que la Coordinación procese tu registro.
+            </p>
+            <div [innerHTML]="message" style="font-size: 1.5em;" *ngIf="message">
+            </div>
+        </div>
+
+        <div>
+            <div class="div-buttons">
+                <div class="buttons">
+                    <button class="button is-local-primary" (click)="closeModalFunction()">
+                        <strong>Aceptar</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<button class="modal-close is-large" (click)="closeModalFunction()" aria-label="close"></button>

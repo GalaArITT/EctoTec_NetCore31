@@ -1,0 +1,45 @@
+.main-content-modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.modal-content {
+    margin: 0 !important;
+}
+
+.main-form-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.form-div {
+    width: 80%;
+}
+
+.div-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.footer-login {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.paragraph {
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+

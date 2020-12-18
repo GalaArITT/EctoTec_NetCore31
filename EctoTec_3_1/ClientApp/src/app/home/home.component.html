@@ -1,0 +1,117 @@
+<div *ngIf="!isSending">
+  <form [formGroup]="formRegister">
+    <div class="form-group">
+      <div class="form-group col-md-6">
+        <label for="inputAddress">Nombre</label>
+        <input type="text" class="form-control" formControlName="nombre" placeholder="Escribe tu nombre"
+          [ngClass]="{'is-danger': formRegister.get('nombre').invalid && (formRegister.get('nombre').dirty || formRegister.get('nombre').touched), 'is-success': formRegister.get('nombre').valid && (formRegister.get('nombre').touched)}"
+          (input)="soloLetras($event)">
+        <ng-container
+          *ngIf="formRegister.get('nombre').invalid && (formRegister.get('nombre').dirty || formRegister.get('nombre').touched)">
+          <p *ngIf="formRegister.get('nombre').errors.required" class="text-danger">
+            * Campo requerido
+          </p>
+        </ng-container>
+      </div>
+  
+      <div class="form-group col-md-6">
+        <label>Email</label>
+        <input type="email" class="form-control" formControlName="email" placeholder="Escribe tu email" 
+        [ngClass]="{'is-danger': (formRegister.get('email').invalid && (formRegister.get('email').dirty || formRegister.get('email').touched))|| formRegister.get('email').valid && validatorsErrors.email, 'is-success': 
+        formRegister.get('email').valid && (formRegister.get('email').touched) && !validatorsErrors.email}">
+        <ng-container
+          *ngIf="formRegister.get('email').invalid && (formRegister.get('email').dirty || formRegister.get('email').touched)">
+          <p *ngIf="formRegister.get('email').errors.required" class="text-danger">
+            * Campo requerido
+          </p>
+          <p *ngIf="formRegister.get('email').errors.email" class="text-danger">
+            * Correo no válido
+          </p>
+        </ng-container>
+        <p *ngIf="formRegister.get('email').valid && validatorsErrors.email" class="help is-danger">
+          * Este correo ya existe!
+        </p>
+      </div>
+  
+      <div class="form-group col-md-6">
+        <label for="inputPassword4">Telefono</label>
+        <input type="tel" class="form-control" formControlName="telefono" placeholder="Telefono"
+          [ngClass]="{'is-danger': (formRegister.get('telefono').invalid && (formRegister.get('telefono').dirty || formRegister.get('telefono').touched))|| formRegister.get('telefono').valid && validatorsErrors.telefono, 'is-success': formRegister.get('telefono').valid && (formRegister.get('telefono').touched) && !validatorsErrors.telefono}"
+          (input)="tecladoNumerico($event)">
+        <ng-container
+          *ngIf="formRegister.get('telefono').invalid && (formRegister.get('telefono').dirty || formRegister.get('telefono').touched)">
+          <p *ngIf="formRegister.get('telefono').errors.required" class="text-danger">
+            * Campo requerido
+          </p>
+          <p *ngIf="formRegister.get('telefono').errors.maxlength || formRegister.get('telefono').errors.minlength"
+            class="text-danger">
+            * Debe Tener 10 Carácteres
+          </p>
+          <p *ngIf="formRegister.get('telefono').valid && validatorsErrors.telefono" class="help is-danger">
+            * Este telefono ya fue registrado!
+          </p>
+        </ng-container>
+      </div>
+  
+      <div class="form-group col-md-6">
+        <label for="inputAddress2">Fecha</label>
+        <input type="date" class="form-control" format  formControlName="fecha" (keyup)="compareDates()" (change)="compareDates()" (blur)="compareDates()" >
+        <ng-container
+          *ngIf="formRegister.get('fecha').invalid && (formRegister.get('fecha').dirty || formRegister.get('fecha').touched)">
+          <p *ngIf="formRegister.get('fecha').errors.required" class="text-danger">
+            * Campo requerido
+          </p>
+        </ng-container>
+        <ng-container>
+          <p *ngIf="moreYears" class="text-danger">
+            * La fecha excede de 100 años
+          </p>
+        </ng-container>
+      </div>
+  
+      <div class="form-group col-md-6"
+        [ngClass]="{'is-danger': formRegister.get('idPais').invalid && 
+      (formRegister.get('idPais').dirty || formRegister.get('idPais').touched), 'is-success': formRegister.get('idPais').valid && (formRegister.get('idPais').touched)}">
+        <label for="inputState">Ciudad y Estado</label>
+        <select class="form-control" formControlName="idPais">
+          <option selected>Elige tu ubicación</option>
+          <option *ngFor="let town of ciudad" [ngValue]="town.idpais">
+            {{town.ciudad1}}, {{town.estado}}, {{town.pais}}
+          </option>
+        </select>
+        <ng-container
+          *ngIf="formRegister.get('idPais').invalid && (formRegister.get('idPais').dirty || formRegister.get('idPais').touched)">
+          <p *ngIf="formRegister.get('idPais').errors.required" class="text-danger">
+            * Campo requerido
+          </p>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+  <button type="submit" class="btn btn-success" (click)="validarConfirmacion()">Enviar</button>
+</div>
+´
+<!-- mostrar información del usuario -->
+<div class="container" *ngIf="isSending">
+  <div class="card">
+    <img class="card-img-top" src="../../assets/img/green.jpg" alt="Card image cap" style="width: 70%;">
+    <div class="card-body">
+      <h5 class="card-title">Estimado {{usuario.nombre}}</h5>
+      <p class="card-text">Hemos recibido sus datos y nos pondremos en contacto con usted a la brevedad posible. 
+        Enviaremos un correo con información a su cuenta  <a href="#">{{usuario.email}}</a> 
+      </p>
+      <div class="text-right">
+        <p>
+          Atte.
+        </p>  
+        <p style="color:green;">Green Leaves</p>
+        <p>Monterrey, Nuevo León, México a {{usuario.fecha | date:'dd-MMM-yyyy'}}</p>    
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Mostrar modal de correcto -->
+<div class="modal is-active" [ngClass]="{'is-active': showWelcomeModal}">
+  <app-welcome-modal (modalEvent)="receiveModalEvent($event)" [message]="messageSuccess" title="Gracias">
+  </app-welcome-modal>
+</div>
